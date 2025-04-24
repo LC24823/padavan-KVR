@@ -380,8 +380,8 @@ function show_banner(L3){
 	show_top_status();
 }
 
-var tabtitle = new Array(31);
-var tablink = new Array(31);
+var tabtitle = new Array(35);
+var tablink = new Array(35);
 tabtitle[0] = new Array("", "<#menu5_1_1#>", "<#menu5_1_2#>", "<#menu5_1_3#>", "<#menu5_1_4#>", "<#menu5_1_5#>", "<#menu5_1_6#>");
 tabtitle[1] = new Array("", "<#menu5_1_1#>", "<#menu5_1_2#>", "<#menu5_1_3#>", "<#menu5_1_4#>", "<#menu5_1_5#>", "<#menu5_1_6#>");
 tabtitle[2] = new Array("", "<#menu5_2_1#>", "<#menu5_2_2#>", "<#menu5_2_3#>", "<#menu5_2_4#>", "<#menu5_2_5#>", "<#menu5_2_6#>");
@@ -471,6 +471,18 @@ if (found_app_alist()){
 }
 if (found_app_cloudflare()){
 	tabtitle[30] = new Array("", "CF域名解析");
+}
+if (found_app_easytier()){
+	tabtitle[31] = new Array("", "EasyTier");
+}
+if (found_app_bafa()){
+	tabtitle[32] = new Array("", "巴法云");
+}
+if (found_app_virtualhere()){
+	tabtitle[33] = new Array("", "VirtualHere");
+}
+if (found_app_v2raya()){
+	tabtitle[34] = new Array("", "V2RayA");
 }
 
 //Level 3 Tab title
@@ -584,6 +596,22 @@ if (found_app_cloudflare()){
 	cloudflare_array = new Array("","Advanced_cloudflare.asp");
 	tablink[30] = (cloudflare_array);
 }
+if (found_app_easytier()){
+	easytier_array = new Array("","Advanced_easytier.asp");
+	tablink[31] = (easytier_array);
+}
+if (found_app_bafa()){
+	bafa_array = new Array("","Advanced_bafa.asp");
+	tablink[32] = (bafa_array);
+}
+if (found_app_virtualhere()){
+	virtualhere_array = new Array("","Advanced_virtualhere.asp");
+	tablink[33] = (virtualhere_array);
+}
+if (found_app_v2raya()){
+	v2raya_array = new Array("","Advanced_v2raya.asp");
+	tablink[34] = (v2raya_array);
+}
 
 //Level 2 Menu
 menuL2_title = new Array(23)
@@ -682,6 +710,22 @@ if (found_app_cloudflare()){
 	menuL2_title.push("CF域名解析");
 } else menuL2_title.push("");
 
+if (found_app_easytier()){
+	menuL2_title.push("EasyTier");
+} else menuL2_title.push("");
+
+if (found_app_bafa()){
+	menuL2_title.push("巴法云");
+} else menuL2_title.push("");
+
+if (found_app_virtualhere()){
+	menuL2_title.push("VirtualHere");
+} else menuL2_title.push("");
+
+if (found_app_v2raya()){
+	menuL2_title.push("V2RayA");
+} else menuL2_title.push("");
+
 menuL2_link  = new Array("", tablink[0][1], tablink[1][1], tablink[2][1], tablink[3][1], tablink[4][1], tablink[5][1], tablink[6][1], tablink[7][1], support_2g_radio() ? tablink[8][1] : "Main_EStatus_Content.asp", tablink[9][1]);
 if (found_app_scutclient()){
 	menuL2_link.push(scutclient_array[1]);
@@ -758,6 +802,18 @@ if (found_app_alist()){
 } else menuL2_link.push("");
 if (found_app_cloudflare()){
 	menuL2_link.push(cloudflare_array[1]);
+} else menuL2_link.push("");
+if (found_app_easytier()){
+	menuL2_link.push(easytier_array[1]);
+} else menuL2_link.push("");
+if (found_app_bafa()){
+	menuL2_link.push(bafa_array[1]);
+} else menuL2_link.push("");
+if (found_app_virtualhere()){
+	menuL2_link.push(virtualhere_array[1]);
+} else menuL2_link.push("");
+if (found_app_v2raya()){
+	menuL2_link.push(v2raya_array[1]);
 } else menuL2_link.push("");
 
 //Level 1 Menu in Gateway, Router mode
@@ -1665,6 +1721,10 @@ var w_natpierce = '<% nvram_get_x("", "w_natpierce"); %>';
 var w_tailscale = '<% nvram_get_x("", "w_tailscale"); %>';
 var w_alist = '<% nvram_get_x("", "w_alist"); %>';
 var w_cloudflare = '<% nvram_get_x("", "w_cloudflare"); %>';
+var w_easytier = '<% nvram_get_x("", "w_easytier"); %>';
+var w_bafa = '<% nvram_get_x("", "w_bafa"); %>';
+var w_virtualhere = '<% nvram_get_x("", "w_virtualhere"); %>';
+var w_v2raya = '<% nvram_get_x("", "w_v2raya"); %>';
 
 if (w_ai==0){
 	menuL1_link[2] = "";
@@ -1781,6 +1841,22 @@ if (w_alist==0){
 if (w_cloudflare==0){
 	menuL2_link[31] = "";
 	menuL2_title[31] = "";
+}
+if (w_easytier==0){
+	menuL2_link[32] = "";
+	menuL2_title[32] = "";
+}
+if (w_bafa==0){
+	menuL2_link[33] = "";
+	menuL2_title[33] = "";
+}
+if (w_virtualhere==0){
+	menuL2_link[34] = "";
+	menuL2_title[34] = "";
+}
+if (w_v2raya==0){
+	menuL2_link[35] = "";
+	menuL2_title[35] = "";
 }
 
 (function($){

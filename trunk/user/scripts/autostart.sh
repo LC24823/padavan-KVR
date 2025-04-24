@@ -96,12 +96,17 @@ logger -t "自动启动" "正在启动VNT服务端"
 /usr/bin/vnts.sh start &
 fi
 
-if [ $(nvram get vntcli_enable) = 1 ] ; then
+if [ $(nvram get vntcli_enable) = 1 ] || [ $(nvram get vntcli_enable) = 2 ]  ; then
 logger -t "自动启动" "正在启动VNT客户端"
 /usr/bin/vnt.sh start &
 fi
 
-if [ $(nvram get wxsend_enable) = 1 ] ; then
+if [ $(nvram get easytier_enable) = 1 ] || [ $(nvram get easytier_enable) = 2 ] || [ $(nvram get easytier_web_enable) = 1 ] ; then
+logger -t "自动启动" "正在启动EasyTier"
+/usr/bin/easytier.sh start &
+fi
+
+if [ $(nvram get wxsend_enable) = 1 ] || [ $(nvram get wxsend_enable) = 2 ] ; then
 logger -t "自动启动" "正在启动微信推送"
 /usr/bin/wxsend.sh start &
 fi
@@ -109,6 +114,11 @@ fi
 if [ $(nvram get ss_enable) = 1 ] ; then
 logger -t "自动启动" "正在启动科学上网"
 /usr/bin/shadowsocks.sh start &
+fi
+
+if [ $(nvram get v2raya_enable) = 1 ] ; then
+logger -t "自动启动" "正在启动V2RayA"
+/usr/bin/v2raya.sh start &
 fi
 
 if [ $(nvram get adg_enable) = 1 ] ; then
@@ -126,6 +136,11 @@ logger -t "自动启动" "正在启动zerotier"
 /usr/bin/zerotier.sh start &
 fi
 
+if [ $(nvram get bafa_enable) = 1 ] ; then
+logger -t "自动启动" "正在启动巴法云物联网"
+/usr/bin/bafa.sh start &
+fi
+
 if [ $(nvram get nvpproxy_enable) = 1 ] ; then
 logger -t "自动启动" "正在启动nvpproxy"
 /usr/bin/nvpproxy.sh start &
@@ -139,6 +154,11 @@ fi
 if [ $(nvram get aliyundrive_enable) = 1 ] ; then
 logger -t "自动启动" "正在启动阿里云盘"
 /usr/bin/aliyundrive-webdav.sh start &
+fi
+
+if [ $(nvram get virtualhere_enable) = 1 ] ; then
+logger -t "自动启动" "正在启动Virtualhere"
+/usr/bin/virtualhere.sh start &
 fi
 
 if [ $(nvram get uu_enable) = 1 ] ; then
@@ -161,7 +181,7 @@ logger -t "自动启动" "正在启动皎月连"
 /usr/bin/natpierce.sh start &
 fi
 
-if [ $(nvram get tailscale_enable) = 1 ] ; then
+if [ $(nvram get tailscale_enable) = 1 ] || [ $(nvram get tailscale_enable) = 2 ] ; then
 logger -t "自动启动" "正在启动tailscale"
 /usr/bin/tailscale.sh start &
 fi

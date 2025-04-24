@@ -2,6 +2,10 @@
 
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Flmq8267%2Fpadavan-KVR&count_bg=%2395C10D&title_bg=%23555555&icon=github.svg&icon_color=%238DC409&title=%E8%AE%BF%E9%97%AE%E6%95%B0&edge_flat=false)](https://hits.seeyoufarm.com)
 
+不需要WireGuard的可以去`trunk/configs/boards/型号/kernel-3.4.x**.config`文件里找到 **`CONFIG_WIREGUARD=y`** 改成 **`# CONFIG_WIREGUARD is not set`** 去掉wg内核模块 约900多k
+![](./UI.png)
+![image](https://github.com/user-attachments/assets/5496dceb-0b01-423d-894a-7795889cece4)
+
 fork于fightroad的仓库 https://github.com/fightroad/Padavan-KVR.git 
 
 最终好像也是vb1980  https://github.com/vb1980/Padavan-KVR.git
@@ -13,7 +17,7 @@ fork于fightroad的仓库 https://github.com/fightroad/Padavan-KVR.git
 默认纯净没有添加插件，[在线云编译修改插件](.github/workflows/NEWIFI3.yml) [自定义增减插件](trunk/configs/templates/NEWIFI3.config)，
 我删掉了其他机型的[插件配置文件](trunk/configs/templates)，从[vb1980/Padavan-KVR](https://github.com/vb1980/Padavan-KVR/tree/main/trunk/configs/templates)复制过来吧
 
-[修改自己想要的背景](/trunk/user/www/n56u_ribbon_fixed/bootstrap/img/bg/wood.jpg) 替换wood.jpg文件就行
+修改自己想要的背景图：刷机之后在`/etc/storage/`新建`bg`文件夹 ，里面放一个`wood.jpg`照片就行。 **`/etc/storage/bg/wood.jpg`**
 
 [修改自己想要的LOGO](/trunk/user/www/n56u_ribbon_fixed/bootstrap/img/asus_logo.png) 替换asus_logo.png文件就行(像素尺寸要求150×70）
 

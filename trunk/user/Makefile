@@ -122,6 +122,7 @@ dir_y							+= httpd
 dir_y							+= www
 dir_y							+= rc
 dir_y							+= jq
+dir_$(CONFIG_FIRMWARE_INCLUDE_NGINX)			+= nginx
 dir_$(CONFIG_FIRMWARE_INCLUDE_ANTFS)			+= antfs
 dir_$(CONFIG_FIRMWARE_INCLUDE_NAPT66)			+= napt66
 dir_$(CONFIG_FIRMWARE_INCLUDE_SFE)			+= shortcut-fe
@@ -255,6 +256,10 @@ dir_$(CONFIG_FIRMWARE_INCLUDE_NATPIERCE)	                       += natpierce
 dir_$(CONFIG_FIRMWARE_INCLUDE_TAILSCALE)	                       += tailscale
 dir_$(CONFIG_FIRMWARE_INCLUDE_ALIST)	                       += alist
 dir_$(CONFIG_FIRMWARE_INCLUDE_CLOUDFLARE)	                       += cloudflare
+dir_$(CONFIG_FIRMWARE_INCLUDE_EASYTIER)	                       += easytier
+dir_$(CONFIG_FIRMWARE_INCLUDE_BAFA)	                       += bafa
+dir_$(CONFIG_FIRMWARE_INCLUDE_VIRTUALHERE)	                       += virtualhere
+dir_$(CONFIG_FIRMWARE_INCLUDE_V2RAYA)	                       += v2raya
 ifdef CONFIG_MTD_UBI
 ifneq ($(STORAGE_ENABLED),y)
 dir_y											+= optware

@@ -582,6 +582,26 @@ void stop_frp(void);
 void start_frp(void);
 void restart_frp(void);
 #endif
+#if defined(APP_EASYTIER)
+void stop_easytier(void);
+void start_easytier(void);
+void restart_easytier(void);
+#endif
+#if defined(APP_BAFA)
+void stop_bafa(void);
+void start_bafa(void);
+void restart_bafa(void);
+#endif
+#if defined(APP_VIRTUALHERE)
+void stop_virtualhere(void);
+void start_virtualhere(void);
+void restart_virtualhere(void);
+#endif
+#if defined(APP_V2RAYA)
+void stop_v2raya(void);
+void start_v2raya(void);
+void restart_v2raya(void);
+#endif
 #if defined(APP_VNTS)
 void stop_vnts(void);
 void start_vnts(void);

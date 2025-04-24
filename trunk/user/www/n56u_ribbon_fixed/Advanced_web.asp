@@ -54,6 +54,10 @@ $j(document).ready(function() {
 	init_itoggle('w_tailscale');
 	init_itoggle('w_alist');
 	init_itoggle('w_cloudflare');
+	init_itoggle('w_easytier');
+	init_itoggle('w_bafa');
+	init_itoggle('w_virtualhere');
+	init_itoggle('w_v2raya');
 
 });
 </script>
@@ -126,6 +130,18 @@ if (found_app_alist()){
 }
 if (found_app_cloudflare()){
 	showhide_div('row_wcloudflare', true);
+}
+if (found_app_easytier()){
+	showhide_div('row_weasytier', true);
+}
+if (found_app_bafa()){
+	showhide_div('row_wbafa', true);
+}
+if (found_app_virtualhere()){
+	showhide_div('row_wvirtualhere', true);
+}
+if (found_app_v2raya()){
+	showhide_div('row_wv2raya', true);
 }
 
 }
@@ -590,6 +606,63 @@ function applyRule(){
 												</div>
 											</td>
 										</tr>
+										<tr id="row_weasytier" style="display:none">
+											<th width="50%" >EasyTier</th>
+											<td>
+													<div class="main_itoggle">
+													<div id="w_easytier_on_of">
+														<input type="checkbox" id="w_easytier_fake" <% nvram_match_x("", "w_easytier", "1", "value=1 checked"); %><% nvram_match_x("", "w_easytier", "0", "value=0"); %>  />
+													</div>
+												</div>
+												<div style="position: absolute; margin-left: -10000px;">
+													<input type="radio" value="1" name="w_easytier" id="w_easytier_1" class="input" <% nvram_match_x("", "w_easytier", "1", "checked"); %> /><#checkbox_Yes#>
+													<input type="radio" value="0" name="w_easytier" id="w_easytier_0" class="input" <% nvram_match_x("", "w_easytier", "0", "checked"); %> /><#checkbox_No#>
+												</div>
+											</td>
+										</tr>
+										<tr id="row_wbafa" style="display:none">
+											<th width="50%" >巴法云</th>
+											<td>
+													<div class="main_itoggle">
+													<div id="w_bafa_on_of">
+														<input type="checkbox" id="w_bafa_fake" <% nvram_match_x("", "w_bafa", "1", "value=1 checked"); %><% nvram_match_x("", "w_bafa", "0", "value=0"); %>  />
+													</div>
+												</div>
+												<div style="position: absolute; margin-left: -10000px;">
+													<input type="radio" value="1" name="w_bafa" id="w_bafa_1" class="input" <% nvram_match_x("", "w_bafa", "1", "checked"); %> /><#checkbox_Yes#>
+													<input type="radio" value="0" name="w_bafa" id="w_bafa_0" class="input" <% nvram_match_x("", "w_bafa", "0", "checked"); %> /><#checkbox_No#>
+												</div>
+											</td>
+										</tr>
+										<tr id="row_wvirtualhere" style="display:none">
+											<th width="50%" >VirtualHere</th>
+											<td>
+													<div class="main_itoggle">
+													<div id="w_virtualhere_on_of">
+														<input type="checkbox" id="w_virtualhere_fake" <% nvram_match_x("", "w_virtualhere", "1", "value=1 checked"); %><% nvram_match_x("", "w_virtualhere", "0", "value=0"); %>  />
+													</div>
+												</div>
+												<div style="position: absolute; margin-left: -10000px;">
+													<input type="radio" value="1" name="w_virtualhere" id="w_virtualhere_1" class="input" <% nvram_match_x("", "w_virtualhere", "1", "checked"); %> /><#checkbox_Yes#>
+													<input type="radio" value="0" name="w_virtualhere" id="w_virtualhere_0" class="input" <% nvram_match_x("", "w_virtualhere", "0", "checked"); %> /><#checkbox_No#>
+												</div>
+											</td>
+										</tr>
+										<tr id="row_wv2raya" style="display:none">
+											<th width="50%" >V2RayA</th>
+											<td>
+													<div class="main_itoggle">
+													<div id="w_v2raya_on_of">
+														<input type="checkbox" id="w_v2raya_fake" <% nvram_match_x("", "w_v2raya", "1", "value=1 checked"); %><% nvram_match_x("", "w_v2raya", "0", "value=0"); %>  />
+													</div>
+												</div>
+												<div style="position: absolute; margin-left: -10000px;">
+													<input type="radio" value="1" name="w_v2raya" id="w_v2raya_1" class="input" <% nvram_match_x("", "w_v2raya", "1", "checked"); %> /><#checkbox_Yes#>
+													<input type="radio" value="0" name="w_v2raya" id="w_v2raya_0" class="input" <% nvram_match_x("", "w_v2raya", "0", "checked"); %> /><#checkbox_No#>
+												</div>
+											</td>
+										</tr>
+										
 											<td colspan="2">
 												<br />
 												<center><input class="btn btn-primary" style="width: 219px" type="button" value="<#CTL_apply#>" onclick="applyRule()" /></center>

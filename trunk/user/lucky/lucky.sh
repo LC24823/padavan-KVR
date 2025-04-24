@@ -85,11 +85,15 @@ done
 lucky_dl() {
 	tag="$1"
 	new_tag="$(echo $tag | tr -d 'v' | tr -d ' ')"
+	#这里获取你的链接，自定义下载链接在开机启动脚本设置 nvram set lucky_url="你的下载链接"
+	lk_url=`nvram get lucky_url`
  	if [ "$lucky_daji" = "1" ] ; then
- 		lk_url="https://6.66666.host:66/release/${tag}/${new_tag}_万吉/lucky_${new_tag}_Linux_mipsle_softfloat_wanji.tar.gz"
+ 		[ -z "$lk_url" ] && lk_url="https://6.66666.host:66/release/${tag}/${new_tag}_万吉/lucky_${new_tag}_Linux_mipsle_softfloat_wanji.tar.gz"
+   		lk_url1="http://release.ilucky.net:66/release/${tag}/${new_tag}_wanji/lucky_${new_tag}_Linux_mipsle_softfloat_wanji.tar.gz"
    		lk_url2="https://6.666666.host:66/release/${tag}/${new_tag}_万吉/lucky_${new_tag}_Linux_mipsle_softfloat_wanji.tar.gz"
    	else
-    		lk_url="https://6.66666.host:66/release/${tag}/${new_tag}_lucky/lucky_${new_tag}_Linux_mipsle_softfloat.tar.gz"
+    		[ -z "$lk_url" ] && lk_url="https://6.66666.host:66/release/${tag}/${new_tag}_lucky/lucky_${new_tag}_Linux_mipsle_softfloat.tar.gz"
+      		lk_url1="http://release.ilucky.net:66/release/${tag}/${new_tag}_lucky/lucky_${new_tag}_Linux_mipsle_softfloat.tar.gz"
       		lk_url2="https://6.666666.host:66/release/${tag}/${new_tag}_lucky/lucky_${new_tag}_Linux_mipsle_softfloat.tar.gz"
   	fi
 	logg "开始下载 ${lk_url}"
@@ -101,7 +105,7 @@ lucky_dl() {
 	length=`expr $length / 1048576`
  	lucky_size0="$(check_disk_size $bin_path)"
  	[ ! -z "$length" ] && logg "程序大小 ${length}M， 程序路径可用空间 ${lucky_size0}M "
-        curl -Lko "/tmp/lucky.tar.gz" "${lk_url}" || wget --no-check-certificate -O "/tmp/lucky.tar.gz" "${lk_url}" || curl -Lko "/tmp/lucky.tar.gz" "${lk_url2}" || wget --no-check-certificate -O "/tmp/lucky.tar.gz" "${lk_url2}" || curl -Lko "/tmp/lucky.tar.gz" "${proxy}https://github.com/gdy666/lucky/releases/download/${tag}/lucky_${new_tag}_Linux_mipsle_softfloat.tar.gz" || wget --no-check-certificate -O "/tmp/lucky.tar.gz" "${proxy}https://github.com/gdy666/lucky/releases/download/${tag}/lucky_${new_tag}_Linux_mipsle_softfloat.tar.gz"
+        curl -Lko "/tmp/lucky.tar.gz" "${lk_url}" || wget --no-check-certificate -O "/tmp/lucky.tar.gz" "${lk_url}" || curl -Lko "/tmp/lucky.tar.gz" "${lk_url1}" || wget --no-check-certificate -O "/tmp/lucky.tar.gz" "${lk_url1}" || curl -Lko "/tmp/lucky.tar.gz" "${lk_url2}" || wget --no-check-certificate -O "/tmp/lucky.tar.gz" "${lk_url2}" || curl -Lko "/tmp/lucky.tar.gz" "${proxy}https://github.com/gdy666/lucky/releases/download/${tag}/lucky_${new_tag}_Linux_mipsle_softfloat.tar.gz" || wget --no-check-certificate -O "/tmp/lucky.tar.gz" "${proxy}https://github.com/gdy666/lucky/releases/download/${tag}/lucky_${new_tag}_Linux_mipsle_softfloat.tar.gz"
 	if [ "$?" = 0 ] ; then
 		tar -xzf /tmp/lucky.tar.gz -C /tmp/var
 		
@@ -171,7 +175,7 @@ lucky_start () {
   if [ ! -f "$PROG" ] ; then
      logg "未找到程序$PROG ，开始在线下载..."
      if [ -z "$lucky_tag" ] ; then
-     	[ -z "$tag" ] && tag="v2.14.0" && logg "未获取到最新版本，暂用$tag"
+     	[ -z "$tag" ] && tag="v2.15.7" && logg "未获取到最新版本，暂用$tag"
 	lucky_dl $tag
      else
         logg "下载指定版本 $lucky_tag "

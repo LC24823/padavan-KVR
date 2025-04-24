@@ -549,6 +549,21 @@ void restart_vnts(void){
 }
 #endif
 
+#if defined(APP_EASYTIER)
+void stop_easytier(void){
+	eval("/usr/bin/easytier.sh","stop");
+}
+
+void start_easytier(void){
+	eval("/usr/bin/easytier.sh","start");
+}
+
+void restart_easytier(void){
+	stop_easytier();
+	start_easytier();
+}
+#endif
+
 #if defined(APP_NATPIERCE)
 void stop_natpierce(void){
 	eval("/usr/bin/natpierce.sh","stop");
@@ -573,7 +588,7 @@ void stop_tailscale(void){
 
 void start_tailscale(void){
 	int tailscale_enable = nvram_get_int("tailscale_enable");
-	if ( tailscale_enable == 1)
+	if ( tailscale_enable == 1 || tailscale_enable == 2)
 		eval("/usr/bin/tailscale.sh","start");
 }
 
@@ -590,7 +605,7 @@ void stop_vntcli(void){
 
 void start_vntcli(void){
 	int vntcli_enable = nvram_get_int("vntcli_enable");
-	if ( vntcli_enable == 1)
+	if ( vntcli_enable == 1 || vntcli_enable == 2)
 		eval("/usr/bin/vnt.sh","start");
 }
 
@@ -628,6 +643,54 @@ void start_lucky(void){
 void restart_lucky(void){
 	stop_lucky();
 	start_lucky();
+}
+#endif
+#if defined(APP_BAFA)
+void stop_bafa(void){
+	eval("/usr/bin/bafa.sh","stop");
+}
+
+void start_bafa(void){
+	int bafa_enable = nvram_get_int("bafa_enable");
+	if ( bafa_enable == 1)
+		eval("/usr/bin/bafa.sh","start");
+}
+
+void restart_bafa(void){
+	stop_bafa();
+	start_bafa();
+}
+#endif
+#if defined(APP_VIRTUALHERE)
+void stop_virtualhere(void){
+	eval("/usr/bin/virtualhere.sh","stop");
+}
+
+void start_virtualhere(void){
+	int virtualhere_enable = nvram_get_int("virtualhere_enable");
+	if ( virtualhere_enable == 1)
+		eval("/usr/bin/virtualhere.sh","start");
+}
+
+void restart_virtualhere(void){
+	stop_virtualhere();
+	start_virtualhere();
+}
+#endif
+#if defined(APP_V2RAYA)
+void stop_v2raya(void){
+	eval("/usr/bin/v2raya.sh","stop");
+}
+
+void start_v2raya(void){
+	int v2raya_enable = nvram_get_int("v2raya_enable");
+	if ( v2raya_enable == 1)
+		eval("/usr/bin/v2raya.sh","start");
+}
+
+void restart_v2raya(void){
+	stop_v2raya();
+	start_v2raya();
 }
 #endif
 #if defined(APP_ALIST)
@@ -803,7 +866,7 @@ void stop_wxsend(void){
 
 void start_wxsend(void){
 	int wxsend_enable = nvram_get_int("wxsend_enable");
-	if ( wxsend_enable == 1)
+	if ( wxsend_enable == 1 || wxsend_enable == 2)
 		eval("/usr/bin/wxsend.sh","start");
 }
 
@@ -1072,8 +1135,20 @@ stop_services(int stopall)
 #if defined(APP_FRP)
 	stop_frp();
 #endif
+#if defined(APP_BAFA)
+	stop_bafa();
+#endif
+#if defined(APP_VIRTUALHERE)
+	stop_virtualhere();
+#endif
+#if defined(APP_V2RAYA)
+	stop_v2raya();
+#endif
 #if defined(APP_VNTS)
 	stop_vnts();
+#endif
+#if defined(APP_EASYTIER)
+	stop_easytier();
 #endif
 #if defined(APP_NATPIERCE)
 	stop_natpierce();

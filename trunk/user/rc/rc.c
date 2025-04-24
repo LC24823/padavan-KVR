@@ -1384,6 +1384,24 @@ handle_notifications(void)
 			restart_frp();
 		}
 #endif
+#if defined(APP_BAFA)
+		else if (strcmp(entry->d_name, RCN_RESTART_BAFA) == 0)
+		{
+			restart_bafa();
+		}
+#endif
+#if defined(APP_VIRTUALHERE)
+		else if (strcmp(entry->d_name, RCN_RESTART_VIRTUALHERE) == 0)
+		{
+			restart_virtualhere();
+		}
+#endif
+#if defined(APP_V2RAYA)
+		else if (strcmp(entry->d_name, RCN_RESTART_V2RAYA) == 0)
+		{
+			restart_v2raya();
+		}
+#endif
 #if defined(APP_VNTS)
 		else if (strcmp(entry->d_name, RCN_RESTART_VNTS) == 0)
 		{
@@ -1418,6 +1436,12 @@ handle_notifications(void)
 		else if (strcmp(entry->d_name, RCN_RESTART_TAILSCALE) == 0)
 		{
 			restart_tailscale();
+		}
+#endif
+#if defined(APP_EASYTIER)
+		else if (strcmp(entry->d_name, RCN_RESTART_EASYTIER) == 0)
+		{
+			restart_easytier();
 		}
 #endif
 #if defined(APP_CLOUDFLARED)

@@ -278,6 +278,18 @@ endif
 ifneq ($(CONFIG_FIRMWARE_INCLUDE_CLOUDFLARE),y)
 	rm -f $(INSTALLDIR)/www/Advanced_cloudflare.asp
 endif
+ifneq ($(CONFIG_FIRMWARE_INCLUDE_EASYTIER),y)
+	rm -f $(INSTALLDIR)/www/Advanced_easytier.asp
+endif
+ifneq ($(CONFIG_FIRMWARE_INCLUDE_BAFA),y)
+	rm -f $(INSTALLDIR)/www/Advanced_bafa.asp
+endif
+ifneq ($(CONFIG_FIRMWARE_INCLUDE_VIRTUALHERE),y)
+	rm -f $(INSTALLDIR)/www/Advanced_virtualhere.asp
+endif
+ifneq ($(CONFIG_FIRMWARE_INCLUDE_V2RAYA),y)
+	rm -f $(INSTALLDIR)/www/Advanced_v2raya.asp
+endif
 
 clean:
 	@echo "Clean www romfs"

@@ -152,7 +152,11 @@ vnt_keep() {
 	[ -z "\`pidof vnt-cli\`" ] && logger -t "进程守护" "VNT客户端 进程掉线" && eval "$scriptfilepath start &" && sed -Ei '/【VNT客户端】|^$/d' /tmp/script/_opt_script_check #【VNT客户端】
 	[ -z "\$(iptables -L -n -v | grep '$tunname')" ] && logger -t "进程守护" "vnt-cli 防火墙规则失效" && eval "$scriptfilepath start &" && sed -Ei '/【VNT客户端】|^$/d' /tmp/script/_opt_script_check #【VNT客户端】
 	OSC
-
+	if [ ! -z "$vnt_tcp_port" ] ; then
+		cat >> "/tmp/script/_opt_script_check" <<-OSC
+	[ -z "\$(iptables -L -n -v | grep '$vnt_tcp_port')" ] && logger -t "进程守护" "vnt-cli 防火墙规则失效" && eval "$scriptfilepath start &" && sed -Ei '/【VNT客户端】|^$/d' /tmp/script/_opt_script_check #【VNT客户端】
+	OSC
+	fi
 	fi
 
 
@@ -194,17 +198,18 @@ start_vntcli() {
   		[[ "$($VNTCLI -h 2>&1 | wc -l)" -lt 2 ]] && logger -t "【VNT客户端】" "程序${VNTCLI}不完整！" && rm -rf $VNTCLI
   	fi
  	if [ ! -f "$VNTCLI" ] ; then
-		logger -t "VNT客户端" "主程序${VNTCLI}不存在，开始在线下载..."
+		logger -t "【VNT客户端】" "主程序${VNTCLI}不存在，开始在线下载..."
   		[ ! -d /etc/storage/bin ] && mkdir -p /etc/storage/bin
-  		[ -z "$tag" ] && tag="1.2.15"
+  		[ -z "$tag" ] && tag="v1.2.16"
   		dowload_vntcli $tag
   	fi
 	sed -Ei '/【VNT客户端】|^$/d' /tmp/script/_opt_script_check
 	killall vnt-cli >/dev/null 2>&1
-	
+	path=$(dirname "$VNTCLI")
+ 	vntpath=$(dirname "$VNTCLI")
+	log_path="${path}"
 	if [ "$vntcli_log" = "1" ] ; then
-		path=$(dirname "$VNTCLI")
-		log_path="${path}"
+		
 		if [ ! -f "${log_path}/log4rs.yaml" ] ; then
 			mkdir -p ${log_path}
 cat > "${log_path}/log4rs.yaml"<<EOF

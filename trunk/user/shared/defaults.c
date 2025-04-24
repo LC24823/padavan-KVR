@@ -543,6 +543,10 @@ struct nvram_pair router_defaults[] = {
 	{ "w_tailscale", "1" },
 	{ "w_alist", "1" },
 	{ "w_cloudflare", "1" },
+	{ "w_easytier", "1" },
+	{ "w_bafa", "1" },
+	{ "w_virtualhere", "1" },
+	{ "w_v2raya", "1" },
 
 	{ "ip6_service", "" },
 	{ "ip6_ppe_on", "0" },
@@ -846,6 +850,62 @@ struct nvram_pair router_defaults[] = {
 	{ "lucky_daji", "0" },
 #endif
 
+#if defined(APP_EASYTIER)
+	/*easytier*/
+	{ "easytier_enable", "0" },
+	{ "easytier_config_server", "" },
+	{ "easytier_bin", "/tmp/var/easytier-core" },
+	{ "easytier_log", "0" },
+	{ "easytier_ports", "11010" },
+	{ "easytier_tunname", "tun0" },
+	{ "easytier_web_enable", "0" },
+	{ "easytier_web_db", "/etc/storage/easytier/et.db" },
+	{ "easytier_web_port", "22020" },
+	{ "easytier_web_protocol", "" },
+	{ "easytier_web_api", "11211" },
+	{ "easytier_web_log", "2" },
+	{ "easytier_html_port", "11210" },
+	{ "easytier_web_bin", "/tmp/var/easytier-web" },
+#endif
+
+#if defined(APP_BAFA)
+	/*巴法*/
+	{ "bafa_enable", "0" },
+	{ "bafa_topics", "" },
+	{ "bafa_token", "" },
+	{ "bafa_qos", "1" },
+	{ "bafa_host", "bemfa.com" },
+	{ "bafa_port", "9501" },
+	{ "bafa_show", "0" },
+	{ "bafa_bin", "/usr/bin/stdoutsubc" },
+#endif
+
+#if defined(APP_VIRTUALHERE)
+	/*virtualhere*/
+	{ "virtualhere_enable", "0" },
+	{ "virtualhere_wan", "0" },
+	{ "virtualhere_v6", "0" },
+	{ "virtualhere_bin", "/etc/storage/bin/virtualhere" },
+#endif
+
+#if defined(APP_V2RAYA)
+	/*v2raya*/
+	{ "v2raya_enable", "0" },
+	{ "v2raya_address", "" },
+	{ "v2raya_config", "/etc/storage/v2raya_config" },
+	{ "v2raya_confdir", "" },
+	{ "v2raya_assetsdir", "/tmp/var" },
+	{ "v2raya_transparent", "" },
+	{ "v2raya_core_hook", "" },
+	{ "v2raya_plugin", "" },
+	{ "v2raya_ipv6", "auto" },
+	{ "v2raya_log", "info" },
+	{ "v2raya_bin", "/tmp/var/v2raya" },
+	{ "v2raya_v2ray", "" },
+	{ "v2raya_cmd", "--log-disable-color" },
+	{ "v2raya_env", "" },
+#endif
+
 #if defined(APP_VNTS)
 	/*vnts*/
 	{ "vnts_enable", "0" },
@@ -908,7 +968,9 @@ struct nvram_pair router_defaults[] = {
 	{ "wxsend_appsecret", "" },
 	{ "wxsend_touser", "" },
 	{ "wxsend_template_id", "" },
+	{ "wxsend_webhook", "" },
 	{ "wxsend_title", "" },
+	{ "wxsend_content", "" },
 	{ "wxsend_notify_1", "0" },
 	{ "wxsend_notify_2", "0" },
 	{ "wxsend_notify_3", "0" },

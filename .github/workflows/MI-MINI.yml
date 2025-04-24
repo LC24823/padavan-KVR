@@ -1,5 +1,5 @@
 
-name: 友华WR330
+name: 小米MI-MINI
 
 on: 
   workflow_dispatch:
@@ -11,7 +11,7 @@ env:
   TZ: Asia/Shanghai
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
     - name: Checkout
@@ -22,13 +22,12 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get -y install unzip libtool-bin curl cmake gperf gawk flex bison nano xxd fakeroot \
-        cpio git python-docutils gettext automake autopoint texinfo build-essential help2man \
+        cpio git python3-docutils gettext automake autopoint texinfo build-essential help2man \
         pkg-config zlib1g-dev libgmp3-dev libmpc-dev libmpfr-dev libncurses5-dev libltdl-dev wget
-        sudo timedatectl set-timezone Asia/Shanghai
     - name: Install UPX
       uses: crazy-max/ghaction-upx@v3
       with:
-        version: latest
+        version: v4.2.4
         install-only: true
     - name: Clone source code
       env:
@@ -38,15 +37,15 @@ jobs:
         cd /opt/rt-n56u/toolchain-mipsel
         sh dl_toolchain.sh
         mkdir -p /opt/images/
-
-        ##### 修改内存空间和 storage空间3m
-        sed -i 's/0x200000/0x300000/g' /opt/rt-n56u/trunk/configs/boards/K2P/kernel-3.4.x-5.0.config
-        sed -i 's/size_etc="6M"/size_etc="3M"/g' /opt/rt-n56u/trunk/user/scripts/dev_init.sh
-        #sed -i 's/size_tmp="24M"/size_tmp="50M"/g' /opt/rt-n56u/trunk/user/scripts/dev_init.sh
-        sed -i 's/mtd_part_size=65536/mtd_part_size=3145728/g' /opt/rt-n56u/trunk/user/scripts/mtd_storage.sh
+        
+        ##### 修改内存空间和 storage空间
+        sed -i 's/SIZ=0x80000/SIZ=0x500000/g' /opt/rt-n56u/trunk/configs/boards/MI-MINI/kernel-3.4.x.config
+        sed -i 's/size_etc="6M"/size_etc="5M"/g' /opt/rt-n56u/trunk/user/scripts/dev_init.sh
+        sed -i 's/size_tmp="24M"/size_tmp="30M"/g' /opt/rt-n56u/trunk/user/scripts/dev_init.sh
+        sed -i 's/mtd_part_size=65536/mtd_part_size=5242880/g' /opt/rt-n56u/trunk/user/scripts/mtd_storage.sh
     - name: Build Firmware
       env:
-        TNAME: WR330
+        TNAME: MI-MINI
         KERNEL: 3.4
       run: |
         cd /opt/rt-n56u/trunk
@@ -165,19 +164,19 @@ jobs:
         echo "CONFIG_FIRMWARE_ENABLE_USB=y" >> .config
         
         #通过 Paragon 的 "ufsd" 驱动启用 NTFS 文件系统支持。约 0.4MB
-        echo "CONFIG_FIRMWARE_ENABLE_UFSD=y" >> .config
+        echo "CONFIG_FIRMWARE_ENABLE_UFSD=n" >> .config
         
         #启用 FAT/FAT32 文件系统支持。约 0.1MB
-        echo "CONFIG_FIRMWARE_ENABLE_FAT=y" >> .config
+        echo "CONFIG_FIRMWARE_ENABLE_FAT=n" >> .config
         
         #启用 exFAT（同时支持 FAT/FAT32）文件系统支持。约 0.12MB
-        echo "CONFIG_FIRMWARE_ENABLE_EXFAT=y" >> .config
+        echo "CONFIG_FIRMWARE_ENABLE_EXFAT=n" >> .config
         
         #启用 EXT2 文件系统支持。约 0.1MB
-        echo "CONFIG_FIRMWARE_ENABLE_EXT2=y" >> .config
+        echo "CONFIG_FIRMWARE_ENABLE_EXT2=n" >> .config
         
         #启用 EXT3 文件系统支持。约 0.2MB
-        echo "CONFIG_FIRMWARE_ENABLE_EXT3=y" >> .config
+        echo "CONFIG_FIRMWARE_ENABLE_EXT3=n" >> .config
         
         #启用 EXT4（同时支持 EXT3/EXT2）文件系统支持。约 0.4MB
         echo "CONFIG_FIRMWARE_ENABLE_EXT4=y" >> .config
@@ -195,7 +194,7 @@ jobs:
         echo "CONFIG_FIRMWARE_INCLUDE_UVC=n" >> .config
 
         ##包含 USB-HID 模块。约 0.2MB
-        echo "CONFIG_FIRMWARE_INCLUDE_HID=y" >> .config
+        echo "CONFIG_FIRMWARE_INCLUDE_HID=n" >> .config
 
         ##包含 USB-Serial 模块（例如 pl2303）。约 0.03MB
         echo "CONFIG_FIRMWARE_INCLUDE_SERIAL=y" >> .config
@@ -222,7 +221,7 @@ jobs:
         echo "CONFIG_FIRMWARE_INCLUDE_NFSD=n" >> .config
 
         ## 包含 CIFS（SMB）客户端。约 0.2MB
-        echo "CONFIG_FIRMWARE_INCLUDE_CIFS=y" >> .config
+        echo "CONFIG_FIRMWARE_INCLUDE_CIFS=n" >> .config
 
         ##包含 NTFS-3G FUSE 驱动（替代 Paragon 的 "ufsd" 驱动）。约 0.4MB
         echo "CONFIG_FIRMWARE_INCLUDE_NTFS_3G=n" >> .config
@@ -234,7 +233,7 @@ jobs:
         echo "CONFIG_FIRMWARE_INCLUDE_U2EC=y" >> .config
 
         ##包含 "tcpdump" 工具。约 0.6MB
-        echo "CONFIG_FIRMWARE_INCLUDE_TCPDUMP=n" >> .config
+        echo "CONFIG_FIRMWARE_INCLUDE_TCPDUMP=y" >> .config
 
         ## 包含 "hdparm" 工具（允许设置硬盘节能超时时间和 APM）。约 0.1MB
         echo "CONFIG_FIRMWARE_INCLUDE_HDPARM=y" >> .config
@@ -288,30 +287,30 @@ jobs:
         echo "CONFIG_FIRMWARE_INCLUDE_OPENSSL_EXE=y" >> .config
 
         ##包含 xUPNPd IPTV 媒体服务器。约 0.3MB
-        echo "CONFIG_FIRMWARE_INCLUDE_XUPNPD=y" >> .config
+        echo "CONFIG_FIRMWARE_INCLUDE_XUPNPD=n" >> .config
 
         ##包含 Minidlna UPnP 媒体服务器。约 1.6MB
         echo "CONFIG_FIRMWARE_INCLUDE_MINIDLNA=n" >> .config
 
-        ##包含 Firefly iTunes 媒体服务器。约 1.0MB
+        ##包含 Firefly iTunes 媒体服务器。约 1.0MB 
         echo "CONFIG_FIRMWARE_INCLUDE_FIREFLY=n" >> .config
 
         ##为 Minidlna 和 Firefly 包含 ffmpeg 0.11.x（替代 0.6.x）。约 0.1MB
-        echo "CONFIG_FIRMWARE_INCLUDE_FFMPEG_NEW=y" >> .config
+        echo "CONFIG_FIRMWARE_INCLUDE_FFMPEG_NEW=n" >> .config
 
 
 
-        ##包含 Transmission 种子下载工具。openssl 约 1.2MB，transmission 约 1.5MB 已删除 /trunk/user/httpd/common.h
+        ##包含 Transmission 种子下载工具。openssl 约 1.2MB，transmission 约 1.5MB 已删除 请查看/trunk/user/httpd/common.h
         echo "CONFIG_FIRMWARE_INCLUDE_TRANSMISSION=n" >> .config
 
         ##包含 Transmission-Web-Control（高级 WebUI）。约 0.8MB 已删除 /trunk/user/httpd/common.h
         echo "CONFIG_FIRMWARE_INCLUDE_TRANSMISSION_WEB_CONTROL=n" >> .config
 
         ##包含 Aria2 下载管理器。openssl 约 1.2MB，aria2 约 3.5MB
-        echo "CONFIG_FIRMWARE_INCLUDE_ARIA=y" >> .config
+        echo "CONFIG_FIRMWARE_INCLUDE_ARIA=n" >> .config
 
         ##包含 Aria2 WEB 控制界面。约 0.7MB。
-        echo "CONFIG_FIRMWARE_INCLUDE_ARIA_WEB_CONTROL=y" >> .config
+        echo "CONFIG_FIRMWARE_INCLUDE_ARIA_WEB_CONTROL=n" >> .config
 
         
 
@@ -322,7 +321,7 @@ jobs:
         echo "CONFIG_FIRMWARE_INCLUDE_SCUTCLIENT=n" >> .config
         
         ## OpenVPN。需要 IPv6 支持。openssl 约 1.2MB，openvpn 约 0.4MB
-        echo "CONFIG_FIRMWARE_INCLUDE_OPENVPN=y" >> .config
+        echo "CONFIG_FIRMWARE_INCLUDE_OPENVPN=n" >> .config
 
         ## 广东工业校园认证
         echo "CONFIG_FIRMWARE_INCLUDE_GDUT_DRCOM=n" >> .config
@@ -351,7 +350,7 @@ jobs:
          ## SOFTETHERVPN
         echo "CONFIG_FIRMWARE_INCLUDE_SOFTETHERVPN_CMD=n" >> .config
 
-         ## DNS转发 已删除 /trunk/user/httpd/common.h
+         ## DNS转发 已删除 请查看/trunk/user/httpd/common.h
         echo "CONFIG_FIRMWARE_INCLUDE_DNSFORWARDER=n" >> .config
 
          ## KMS服务器 已删除 /trunk/user/httpd/common.h
@@ -373,55 +372,61 @@ jobs:
         echo "CONFIG_FIRMWARE_INCLUDE_IPERF3=y" >> .config
 
         ## DUMP1090
-        echo "CONFIG_FIRMWARE_INCLUDE_DUMP1090=y" >> .config
+        echo "CONFIG_FIRMWARE_INCLUDE_DUMP1090=n" >> .config
 
         ## RTL_SDR
-        echo "CONFIG_FIRMWARE_INCLUDE_RTL_SDR=y" >> .config
+        echo "CONFIG_FIRMWARE_INCLUDE_RTL_SDR=n" >> .config
 
         ## MTR
         echo "CONFIG_FIRMWARE_INCLUDE_MTR=y" >> .config
 
         ## ipv6端口转发工具
-        echo "CONFIG_FIRMWARE_INCLUDE_SOCAT=y" >> .config
+        echo "CONFIG_FIRMWARE_INCLUDE_SOCAT=n" >> .config
 
         ## SRELAY代理
         echo "CONFIG_FIRMWARE_INCLUDE_SRELAY=y" >> .config
 
-        ## MENTOHUST校园认证 已删除 /trunk/user/httpd/common.h
+        ## MENTOHUST校园认证 已删除 请查看/trunk/user/httpd/common.h
         echo "CONFIG_FIRMWARE_INCLUDE_MENTOHUST=n" >> .config
 
         ##################################
         
         echo "CONFIG_FIRMWARE_INCLUDE_FRPC=y" >> .config  ## FRPC 客户端 约8k
         echo "CONFIG_FIRMWARE_INCLUDE_FRPS=y" >> .config  ## FRPS 服务端 约8k
-        echo "CONFIG_FIRMWARE_INCLUDE_WIREGUARD=y" >> .config  ## wireguard 约1M
+        echo "CONFIG_FIRMWARE_INCLUDE_WIREGUARD=n" >> .config  ## wireguard 约1M
         echo "CONFIG_FIRMWARE_INCLUDE_TUNSAFE=n" >> .config ## tunsafe（wireguard的TCP方式）
-        echo "CONFIG_FIRMWARE_INCLUDE_ZEROTIER=y" >> .config ## zerotier 约 20k
-        echo "CONFIG_FIRMWARE_INCLUDE_ALIDDNS=y" >> .config #阿里DDNS ~20k
+        echo "CONFIG_FIRMWARE_INCLUDE_ZEROTIER=n" >> .config ## zerotier 约 20k
+        echo "CONFIG_FIRMWARE_INCLUDE_ALIDDNS=n" >> .config #阿里DDNS ~20k
         echo "CONFIG_FIRMWARE_INCLUDE_DDNSTO=n" >> .config #ddnsto 约800k  已删除 /trunk/user/httpd/common.h
-        echo "CONFIG_FIRMWARE_INCLUDE_TAILSCALE=y" >> .config #tailscale 约20k
-        echo "CONFIG_FIRMWARE_INCLUDE_NATPIERCE=y" >> .config #皎月连 约20k
+        echo "CONFIG_FIRMWARE_INCLUDE_TAILSCALE=n" >> .config #tailscale 约20k
+        echo "CONFIG_FIRMWARE_INCLUDE_NATPIERCE=n" >> .config #皎月连 约20k
         echo "CONFIG_FIRMWARE_INCLUDE_VNTCLI=y" >> .config #vnt客户端 约80k
-        echo "CONFIG_FIRMWARE_INCLUDE_VNTS=y" >> .config #vnt服务端 约50k
-        echo "CONFIG_FIRMWARE_INCLUDE_CLOUDFLARED=y" >> .config #CF的隧道 约50k
-        echo "CONFIG_FIRMWARE_INCLUDE_LUCKY=y" >> .config #LUCKY 约50k
-        echo "CONFIG_FIRMWARE_INCLUDE_CLOUDFLARE=y" >> .config #CF-ddns 约50k
+        echo "CONFIG_FIRMWARE_INCLUDE_VNTS=n" >> .config #vnt服务端 约50k
+        echo "CONFIG_FIRMWARE_INCLUDE_CLOUDFLARED=n" >> .config #CF的隧道 约50k
+        echo "CONFIG_FIRMWARE_INCLUDE_LUCKY=n" >> .config #LUCKY 约50k
+        echo "CONFIG_FIRMWARE_INCLUDE_CLOUDFLARE=n" >> .config #CF-ddns 约50k
+        echo "CONFIG_FIRMWARE_INCLUDE_EASYTIER=y" >> .config #EasyTier 约50k
         
-        echo "CONFIG_FIRMWARE_INCLUDE_ALIST=y" >> .config #ALIST文件列表 约80k
+        echo "CONFIG_FIRMWARE_INCLUDE_ALIST=n" >> .config #ALIST文件列表 约80k
         echo "CONFIG_FIRMWARE_INCLUDE_WXSEND=y" >> .config #微信推送 约50k
-        echo "CONFIG_FIRMWARE_INCLUDE_UUPLUGIN=y" >> .config #网易UU加速器 约50k
-        echo "CONFIG_FIRMWARE_INCLUDE_ALDRIVER=y" >> .config #阿里云盘 约50k
-        echo "CONFIG_FIRMWARE_INCLUDE_WYY=y" >> .config #网易云解锁 约80k
-        echo "CONFIG_FIRMWARE_INCLUDE_CADDY=y" >> .config #在线文件管理服务不占空间(4.0kb左右)
-        echo "CONFIG_FIRMWARE_INCLUDE_SMARTDNS=y" >> .config #smartdns
-        echo "CONFIG_FIRMWARE_INCLUDE_ADGUARDHOME=y" >> .config #adguardhome不占空间(7.2kb左右)
+        echo "CONFIG_FIRMWARE_INCLUDE_UUPLUGIN=n" >> .config #网易UU加速器 约50k
+        
+        echo "CONFIG_FIRMWARE_INCLUDE_ALDRIVER=n" >> .config #阿里云盘 约50k
+        sed -i 's/EVM_RESTART_ALDRIVER/EVM_RESTART_VIRTUALHERE/g' ./user/httpd/common.h
+        echo "CONFIG_FIRMWARE_INCLUDE_VIRTUALHERE=y" >> .config #virtualhere 约30k 后期需要自行下载可执行文件 在trunk/user/virtualhere 
+        
+        echo "CONFIG_FIRMWARE_INCLUDE_WYY=n" >> .config #网易云解锁 约80k 已删除 /trunk/user/httpd/common.h
+        echo "CONFIG_FIRMWARE_INCLUDE_BAFA=y" >> .config #巴法云 约90k
+        echo "CONFIG_FIRMWARE_INCLUDE_CADDY=n" >> .config #在线文件管理服务不占空间(4.0kb左右)
+        echo "CONFIG_FIRMWARE_INCLUDE_SMARTDNS=n" >> .config #smartdns
+        echo "CONFIG_FIRMWARE_INCLUDE_ADGUARDHOME=n" >> .config #adguardhome不占空间(7.2kb左右)
         echo "CONFIG_FIRMWARE_INCLUDE_NETCAT=n" >> .config #nc工具
-        echo "CONFIG_FIRMWARE_INCLUDE_MSD_LITE=y" >> .config #MSD_LITE工具
+        echo "CONFIG_FIRMWARE_INCLUDE_MSD_LITE=n" >> .config #MSD_LITE工具
         
         
-        #echo "CONFIG_FIRMWARE_INCLUDE_FIREFLY=n" >> .config #FIREFLY
-        #echo "CONFIG_FIRMWARE_INCLUDE_NVPPROXY=n" >> .config #NVPPROXY 已删除 /trunk/user/httpd/common.h
-        ##科学上网## 已删除 /trunk/user/httpd/common.h
+        #echo "CONFIG_FIRMWARE_INCLUDE_V2RAYA=n" >> .config #v2raya 已删除 /trunk/user/httpd/common.h
+        #echo "CONFIG_FIRMWARE_INCLUDE_NVPPROXY=n" >> .config #NVPPROXY 已删除 请查看/trunk/user/httpd/common.h
+        ##科学上网## 已删除 请查看/trunk/user/httpd/common.h
         #echo "CONFIG_FIRMWARE_INCLUDE_SHADOWSOCKS=n" >> .config #SS plus+ 科学上网插件
         #echo "CONFIG_FIRMWARE_INCLUDE_V2RAY=n" >> .config #无需集成会在线下载
         #echo "CONFIG_FIRMWARE_INCLUDE_XRAY=n" >> .config #无需集成会在线下载
@@ -433,13 +438,13 @@ jobs:
         sudo ./build_firmware_modify $TNAME 0
         sudo mv -f images/*.trx /opt/images/
         cp -f .config /opt/images/${TNAME}.config
-        echo "build_time=$(date '+%Y-%m-%d %H:%M:%S')" >> $GITHUB_ENV
+        echo "build_time=$(date '+%Y年%m月%d日%H:%M:%S' | jq -sRr @uri)" >> $GITHUB_ENV
         echo "tag=$(date '+%Y-%m-%d')" >> $GITHUB_ENV
     - name : Upload packages
       uses: actions/upload-artifact@master
       if: always()
       with:
-        name: WR330
+        name: MI-MINI
         path: /opt/images
 
     - name: Release
@@ -447,7 +452,7 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         body: |
-           > ### 编译时间：${{ env.build_time }}
+           > ### ![](https://img.shields.io/badge/%E7%BC%96%E8%AF%91%E6%97%B6%E9%97%B4-${{ env.build_time }}-8267?logo=github&labelColor=%E9%A1%BB)![](https://img.shields.io/github/downloads/${{ github.repository }}/${{ env.tag }}/total?label=%E4%B8%8B%E8%BD%BD%E6%AC%A1%E6%95%B0&logo=github)
 
            `型号.config` 是集成的插件模板
            

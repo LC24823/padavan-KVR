@@ -2397,6 +2397,48 @@ static int tailscaled_status_hook(int eid, webs_t wp, int argc, char **argv)
 }
 #endif
 
+#if defined (APP_EASYTIER)
+static int easytier_status_hook(int eid, webs_t wp, int argc, char **argv)
+{
+	int easytier_status_code = pids("easytier-core");
+	websWrite(wp, "function easytier_status() { return %d;}\n", easytier_status_code);
+	return 0;
+}
+static int easytier_web_status_hook(int eid, webs_t wp, int argc, char **argv)
+{
+	int easytier_web_status_code = pids("easytier-web");
+	websWrite(wp, "function easytier_web_status() { return %d;}\n", easytier_web_status_code);
+	return 0;
+}
+#endif
+
+#if defined (APP_BAFA)
+static int bafa_status_hook(int eid, webs_t wp, int argc, char **argv)
+{
+	int bafa_status_code = pids("stdoutsubc") || pids("stdoutsub");
+	websWrite(wp, "function bafa_status() { return %d;}\n", bafa_status_code);
+	return 0;
+}
+#endif
+
+#if defined (APP_VIRTUALHERE)
+static int virtualhere_status_hook(int eid, webs_t wp, int argc, char **argv)
+{
+	int virtualhere_status_code = pids("virtualhere") || pids("vhusbd") || pids("vhusbdmipsel1004Kc");
+	websWrite(wp, "function virtualhere_status() { return %d;}\n", virtualhere_status_code);
+	return 0;
+}
+#endif
+
+#if defined (APP_V2RAYA)
+static int v2raya_status_hook(int eid, webs_t wp, int argc, char **argv)
+{
+	int v2raya_status_code = pids("v2raya") || pids("v2ray") || pids("xray");
+	websWrite(wp, "function v2raya_status() { return %d;}\n", v2raya_status_code);
+	return 0;
+}
+#endif
+
 #if defined (APP_NATPIERCE)
 static int natpierce_status_hook(int eid, webs_t wp, int argc, char **argv)
 {
@@ -2738,6 +2780,26 @@ ej_firmware_caps_hook(int eid, webs_t wp, int argc, char **argv)
 #else
 	int found_app_tailscale = 0;
 #endif
+#if defined(APP_EASYTIER)
+	int found_app_easytier = 1;
+#else
+	int found_app_easytier = 0;
+#endif
+#if defined(APP_BAFA)
+	int found_app_bafa = 1;
+#else
+	int found_app_bafa = 0;
+#endif
+#if defined(APP_VIRTUALHERE)
+	int found_app_virtualhere = 1;
+#else
+	int found_app_virtualhere = 0;
+#endif
+#if defined(APP_V2RAYA)
+	int found_app_v2raya = 1;
+#else
+	int found_app_v2raya = 0;
+#endif
 #if defined(APP_NATPIERCE)
 	int found_app_natpierce = 1;
 #else
@@ -2984,6 +3046,10 @@ ej_firmware_caps_hook(int eid, webs_t wp, int argc, char **argv)
 		"function found_app_wireguard() { return %d;}\n"
 		"function found_app_natpierce() { return %d;}\n"
 		"function found_app_tailscale() { return %d;}\n"
+		"function found_app_easytier() { return %d;}\n"
+		"function found_app_bafa() { return %d;}\n"
+		"function found_app_virtualhere() { return %d;}\n"
+		"function found_app_v2raya() { return %d;}\n"
 		"function found_app_cloudflared() { return %d;}\n"
 		"function found_app_cloudflare() { return %d;}\n"
 		"function found_app_alist() { return %d;}\n"
@@ -3030,6 +3096,10 @@ ej_firmware_caps_hook(int eid, webs_t wp, int argc, char **argv)
 		found_app_wireguard,
 		found_app_natpierce,
 		found_app_tailscale,
+		found_app_easytier,
+		found_app_bafa,
+		found_app_virtualhere,
+		found_app_v2raya,
 		found_app_cloudflared,
 		found_app_cloudflare,
 		found_app_alist,
@@ -3878,6 +3948,14 @@ apply_cgi(const char *url, webs_t wp)
 		websRedirect(wp, current_url);
 		return 0;
 	}
+	else if (!strcmp(value, " CleareasytierLog "))
+	{
+#if defined(APP_EASYTIER)
+		unlink("/tmp/easytier.log");
+#endif
+		websRedirect(wp, current_url);
+		return 0;
+	}
 	else if (!strcmp(value, " ClearalistLog "))
 	{
 #if defined(APP_ALIST)
@@ -4161,10 +4239,151 @@ apply_cgi(const char *url, webs_t wp)
 #endif
 		return 0;
 	}
+	else if (!strcmp(value, " Restarteasytier "))
+	{
+#if defined(APP_EASYTIER)
+		system("/usr/bin/easytier.sh restart &");
+#endif
+		return 0;
+	}
+	else if (!strcmp(value, " Updateeasytier "))
+	{
+#if defined(APP_EASYTIER)
+		system("/usr/bin/easytier.sh update &");
+#endif
+		return 0;
+	}
+	else if (!strcmp(value, " CMDetpeer "))
+	{
+#if defined(APP_EASYTIER)
+		system("/usr/bin/easytier.sh peer &");
+#endif
+		return 0;
+	}
+	else if (!strcmp(value, " CMDetconnector "))
+	{
+#if defined(APP_EASYTIER)
+		system("/usr/bin/easytier.sh connector &");
+#endif
+		return 0;
+	}
+	else if (!strcmp(value, " CMDetstun "))
+	{
+#if defined(APP_EASYTIER)
+		system("/usr/bin/easytier.sh stun &");
+#endif
+		return 0;
+	}
+	else if (!strcmp(value, " CMDetroute "))
+	{
+#if defined(APP_EASYTIER)
+		system("/usr/bin/easytier.sh route &");
+#endif
+		return 0;
+	}
+	else if (!strcmp(value, " CMDetpeer_center "))
+	{
+#if defined(APP_EASYTIER)
+		system("/usr/bin/easytier.sh peer-center &");
+#endif
+		return 0;
+	}
+	else if (!strcmp(value, " CMDetvpn_portal "))
+	{
+#if defined(APP_EASYTIER)
+		system("/usr/bin/easytier.sh vpn-portal &");
+#endif
+		return 0;
+	}
+	else if (!strcmp(value, " CMDetnode "))
+	{
+#if defined(APP_EASYTIER)
+		system("/usr/bin/easytier.sh node &");
+#endif
+		return 0;
+	}
+	else if (!strcmp(value, " CMDetproxy "))
+	{
+#if defined(APP_EASYTIER)
+		system("/usr/bin/easytier.sh proxy &");
+#endif
+		return 0;
+	}
+	else if (!strcmp(value, " CMDetstatus "))
+	{
+#if defined(APP_EASYTIER)
+		system("/usr/bin/easytier.sh status &");
+#endif
+		return 0;
+	}
 	else if (!strcmp(value, " RestartJYL "))
 	{
 #if defined(APP_NATPIERCE)
 		system("/usr/bin/natpierce.sh restart &");
+#endif
+		return 0;
+	}
+	else if (!strcmp(value, " RestartBAFA "))
+	{
+#if defined(APP_BAFA)
+		system("/usr/bin/bafa.sh restart &");
+#endif
+		return 0;
+	}
+	else if (!strcmp(value, " Restartvhusbd "))
+	{
+#if defined(APP_VIRTUALHERE)
+		system("/usr/bin/virtualhere.sh restart &");
+#endif
+		return 0;
+	}
+	else if (!strcmp(value, " Clearv2rayaLog "))
+	{
+#if defined(APP_V2RAYA)
+		unlink("/tmp/v2raya.log");
+#endif
+		websRedirect(wp, current_url);
+		return 0;
+	}
+	else if (!strcmp(value, " Restartv2raya "))
+	{
+#if defined(APP_V2RAYA)
+		system("/usr/bin/v2raya.sh restart &");
+#endif
+		return 0;
+	}
+	else if (!strcmp(value, " Updatev2raya "))
+	{
+#if defined(APP_V2RAYA)
+		system("/usr/bin/v2raya.sh update &");
+#endif
+		return 0;
+	}
+	else if (!strcmp(value, " v2rayaRESET "))
+	{
+#if defined(APP_V2RAYA)
+		system("/usr/bin/v2raya.sh reset &");
+#endif
+		return 0;
+	}
+	else if (!strcmp(value, " v2rayaConfig "))
+	{
+#if defined(APP_V2RAYA)
+		system("/usr/bin/v2raya.sh config &");
+#endif
+		return 0;
+	}
+	else if (!strcmp(value, " v2rayaConnection "))
+	{
+#if defined(APP_V2RAYA)
+		system("/usr/bin/v2raya.sh connection &");
+#endif
+		return 0;
+	}
+	else if (!strcmp(value, " v2rayaKernel "))
+	{
+#if defined(APP_V2RAYA)
+		system("/usr/bin/v2raya.sh kernel &");
 #endif
 		return 0;
 	}
@@ -4850,6 +5069,21 @@ static char vnts_log_txt[] =
 
 #endif
 
+#if defined (APP_EASYTIER)
+static void
+do_et_log_file(const char *url, FILE *stream)
+{
+	dump_file(stream, "/tmp/easytier.log");
+	fputs("\r\n", stream);
+}
+
+static char et_log_txt[] =
+"Content-Disposition: attachment;\r\n"
+"filename=easytier.log"
+;
+
+#endif
+
 #if defined (APP_KOOLPROXY)
 static void
 do_kp_crt_file(const char *url, FILE *stream)
@@ -4914,6 +5148,9 @@ struct mime_handler mime_handlers[] = {
 #endif
 #if defined(APP_VNTS)
 	{ "vnts.log", "application/force-download", vnts_log_txt, NULL, do_vnts_log_file, 1 },
+#endif
+#if defined(APP_EASYTIER)
+	{ "easytier.log", "application/force-download", et_log_txt, NULL, do_et_log_file, 1 },
 #endif
 #if defined(APP_OPENVPN)
 	{ "client.ovpn", "application/force-download", NULL, NULL, do_export_ovpn_client, 1 },
@@ -5266,9 +5503,22 @@ struct ej_handler ej_handlers[] =
 #if defined (APP_ALIST)
 	{ "alist_status", alist_status_hook},
 #endif
+#if defined (APP_BAFA)
+	{ "bafa_status", bafa_status_hook},
+#endif
+#if defined (APP_VIRTUALHERE)
+	{ "virtualhere_status", virtualhere_status_hook},
+#endif
+#if defined (APP_V2RAYA)
+	{ "v2raya_status", v2raya_status_hook},
+#endif
 #if defined (APP_TAILSCALE)
 	{ "tailscale_status", tailscale_status_hook},
 	{ "tailscaled_status", tailscaled_status_hook},
+#endif
+#if defined (APP_EASYTIER)
+	{ "easytier_status", easytier_status_hook},
+	{ "easytier_web_status", easytier_web_status_hook},
 #endif
 #if defined (APP_CLOUDFLARED)
 	{ "cloudflared_status", cloudflared_status_hook},
